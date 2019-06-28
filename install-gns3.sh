@@ -24,6 +24,12 @@ if [[ "$check_for_yay" -lt 1 ]]; then
     git clone https://aur.archlinux.org/yay.git
     cd yay || exit
     makepkg -si
+  else
+    echo -e "
+    YAY is required for this script. Either install it manually then re-run the script, or let the script install it for you.
+
+    Ending the script...."
+    exit
   fi
 fi
 
