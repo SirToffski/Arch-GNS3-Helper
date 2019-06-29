@@ -4,7 +4,7 @@
 
 # AUR access and YAY are required.
 
-pypi2pkgalias=$(PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f)
+pypi2pkgalias="PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://$PWD"
 latest_GNS3_release=v2.1.21
 
 check_for_yay=$(pacman -Qe | grep -c yay)
@@ -171,7 +171,7 @@ mkdir -p "$HOME"/GNS3-Dev && cd "$_" || exit
 git clone https://github.com/GNS3/gns3-server.git
 cd gns3-server || exit
 git checkout "$latest_GNS3_release"
-"$pypi2pkgalias" git+file://"$PWD"
+"$pypi2pkgalias"
 cd ..
 
 # Install GNS3 GUI
@@ -181,7 +181,7 @@ sleep 1
 git clone https://github.com/GNS3/gns3-gui.git
 cd gns3-gui || exit
 git checkout "$latest_GNS3_release"
-"$pypi2pkgalias" git+file://"$PWD"
+"$pypi2pkgalias"
 
 # Verifying GNS3 installation
 echo -e "
