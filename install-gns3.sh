@@ -153,7 +153,7 @@ echo -e "
 Install python-pypi2pkgbuild"
 sleep 1
 yay -S python-pypi2pkgbuild --noconfirm
-
+sudo pacman -S python-wheel --noconfirm
 
 # Install GNS3 Dependencies
 echo -e "
