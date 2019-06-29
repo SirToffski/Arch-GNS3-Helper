@@ -170,7 +170,7 @@ mkdir -p "$HOME"/GNS3-Dev && cd "$_" || exit
 git clone https://github.com/GNS3/gns3-server.git
 cd gns3-server || exit
 git checkout "$latest_GNS3_release"
-pkgfile --update
+sudo pkgfile --update
 PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
 cd ..
 
@@ -181,7 +181,7 @@ sleep 1
 git clone https://github.com/GNS3/gns3-gui.git
 cd gns3-gui || exit
 git checkout "$latest_GNS3_release"
-pkgfile --update
+sudo pkgfile --update
 PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-gui
 
 # Verifying GNS3 installation
