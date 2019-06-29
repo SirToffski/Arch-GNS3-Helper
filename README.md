@@ -21,3 +21,7 @@ git clone https://github.com/SirToffski/Arch-GNS3-Helper.git
 cd Arch-GNS3-Helper/
 bash install-gns3.sh
 ```
+## Changelog
+
+June 29th 2019
+* As usual, there were a ton of minor bugs in the initial commit. The script should now be completely functional. Some cosmetic changes will be added to make the script more readable.
