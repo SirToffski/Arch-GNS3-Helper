@@ -43,6 +43,7 @@ Press any key to continue or CTRL+C to exit the script"
 
 echo -e "
 Installing dynamips"
+sleep 2
 
 sudo pacman -S libelf libpcap cmake --noconfirm
 yay -S dynamips --noconfirm
@@ -59,8 +60,8 @@ fi
 
 # Installing VPCS
 echo -e "Installing VPCS"
-sleep 1
-yay -S vpcs --noconfrim
+sleep 2
+yay -S vpcs --noconfirm
 cd "$HOME" || exit
 check_for_vpcs=$(type vpcs | grep -c "vpcs is /usr/bin/vpcs")
 if [[ "$check_for_vpcs" -lt 1 ]]; then
@@ -73,8 +74,9 @@ fi
 # Install IOUYAP
 echo -e "
 Installing IOUYAP"
-sudo pacman -S iniparser --noconfrim
-yay -S iouyap --noconfrim
+sleep 2
+sudo pacman -S iniparser --noconfirm
+yay -S iouyap --noconfirm
 cd "$HOME" || exit
 sudo setcap cap_net_admin,cap_net_raw=ep "$(command -v iouyap)"
 check_for_iouyap=$(iouyap -V | grep -c iouyap)
@@ -88,7 +90,7 @@ fi
 # Install IOL Dependencies
 echo -e "
 Install IOL Dependencies"
-sleep 1
+sleep 2
 sudo pacman -S lib32-openssl lib32-gcc-libs --noconfirm
 sudo ln -s /usr/lib32/libcrypto.so.1.0.0 /usr/lib32/libcrypto.so.4
 sudo sysctl net.unix.max_dgram_qlen=10000
@@ -223,5 +225,7 @@ Categories=Application;Network;Qt;
 EOL
   fi
   echo -e "
-  Installation has been completed"
+  Installation has been completed!
+
+  Please reboot your PC..."
 fi
