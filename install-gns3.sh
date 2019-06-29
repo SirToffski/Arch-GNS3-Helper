@@ -23,7 +23,7 @@ if [[ "$check_for_yay" -lt 1 ]]; then
   if [[ "$install_yay" == 1 ]]; then
     echo -e "
     $my_separator
-    ${On_Purple}Installing YAY${Color_Off}
+    ${BCyan}Installing YAY${Color_Off}
     $my_separator"
     sleep 2
     git clone https://aur.archlinux.org/yay.git
@@ -51,7 +51,7 @@ Press any key to continue or CTRL+C to exit the script"
 
 echo -e "
 $my_separator
-${On_Purple}Installing dynamips${Color_Off}
+${BCyan}Installing dynamips${Color_Off}
 $my_separator
 "
 sleep 2
@@ -72,7 +72,7 @@ fi
 # Installing VPCS
 echo -e "
 $my_separator
-${On_Purple}Installing VPCS${Color_Off}
+${BCyan}Installing VPCS${Color_Off}
 $my_separator
 "
 sleep 2
@@ -89,7 +89,7 @@ fi
 # Install IOUYAP
 echo -e "
 $my_separator
-${On_Purple}Installing IOUYAP${Color_Off}
+${BCyan}Installing IOUYAP${Color_Off}
 $my_separator
 "
 sleep 2
@@ -108,7 +108,7 @@ fi
 # Install IOL Dependencies
 echo -e "
 $my_separator
-${On_Purple}Installing IOL Dependencies${Color_Off}
+${BCyan}Installing IOL Dependencies${Color_Off}
 $my_separator
 "
 sleep 2
@@ -134,7 +134,7 @@ fi
 sleep 2
 echo -e "
 $my_separator
-${On_Purple}Installing uBridge${Color_Off}
+${BCyan}Installing uBridge${Color_Off}
 $my_separator
 "
 yay -S ubridge --noconfirm
@@ -152,7 +152,7 @@ fi
 # Install QEMU
 echo -e "
 $my_separator
-${On_Purple}Installing QEMU${Color_Off}
+${BCyan}Installing QEMU${Color_Off}
 $my_separator
 "
 sleep 2
@@ -162,7 +162,7 @@ sudo pacman -S qemu --noconfirm
 # Install docker
 echo -e "
 $my_separator
-${On_Purple}Installing Docker${Color_Off}
+${BCyan}Installing Docker${Color_Off}
 $my_separator
 "
 sleep 2
@@ -174,7 +174,7 @@ sudo gpasswd -a "$USER" docker
 # Install Wireshark
 echo -e "
 $my_separator
-${On_Purple}Installing Wireshark${Color_Off}
+${BCyan}Installing Wireshark${Color_Off}
 $my_separator
 "
 sleep 2
@@ -184,7 +184,7 @@ sudo gpasswd -a "$USER" wireshark
 # Install python-pypi2pkgbuild
 echo -e "
 $my_separator
-${On_Purple}Installing python-pypi2pkgbuild${Color_Off}
+${BCyan}Installing python-pypi2pkgbuild${Color_Off}
 $my_separator
 "
 sleep 2
@@ -194,7 +194,7 @@ yay -S python-zipstream --noconfirm
 # Install GNS3 Dependencies
 echo -e "
 $my_separator
-${On_Purple}Installing GNS3 Dependencies${Color_Off}
+${BCyan}Installing GNS3 Dependencies${Color_Off}
 $my_separator
 "
 sleep 2
@@ -204,7 +204,7 @@ sudo pacman -S git --noconfirm
 # Prepare to install GNS3-server
 echo -e "
 $my_separator
-${On_Purple}Prepare to install GNS3-server${Color_Off}
+${BCyan}Prepare to install GNS3-server${Color_Off}
 $my_separator
 "
 sleep 2
@@ -215,7 +215,7 @@ git checkout "$latest_GNS3_release"
 sudo pkgfile --update
 echo -e "
 $my_separator
-${On_Purple}Install GNS3-server${Color_Off}
+${BCyan}Install GNS3-server${Color_Off}
 $my_separator
 "
 sleep 2
@@ -224,7 +224,7 @@ sleep 5
 # Install GNS3 GUI
 echo -e "
 $my_separator
-${On_Purple}Install GNS3-GUI${Color_Off}
+${BCyan}Install GNS3-GUI${Color_Off}
 $my_separator
 "
 sleep 2
@@ -237,7 +237,7 @@ PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://
 # Verifying GNS3 installation
 echo -e "
 $my_separator
-${On_Purple}Verifying the installation.${Color_Off}
+${BCyan}Verifying the installation.${Color_Off}
 $my_separator
 "
 sleep 3
