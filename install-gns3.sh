@@ -4,7 +4,7 @@
 
 # AUR access and YAY are required.
 
-source "$(find -- */Arch-GNS3-Helper/docs/colours.sh)"
+source "$(find ~/*/Arch-GNS3-Helper/ -name colours.sh)"
 my_separator="+----------------------------------------+"
 
 latest_GNS3_release=v2.1.20
