@@ -4,7 +4,7 @@
 
 # AUR access and YAY are required.
 
-latest_GNS3_release=v2.1.21
+latest_GNS3_release=v2.1.20
 
 check_for_yay=$(pacman -Qe | grep -c yay)
 
