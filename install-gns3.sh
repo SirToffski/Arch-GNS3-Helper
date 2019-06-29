@@ -171,8 +171,9 @@ git clone https://github.com/GNS3/gns3-server.git
 cd gns3-server || exit
 git checkout "$latest_GNS3_release"
 sudo pkgfile --update
+sleep 1
 PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
-cd ..
+sleep 5
 # Install GNS3 GUI
 echo -e "
 Install GNS3 GUI"
@@ -181,7 +182,7 @@ git clone https://github.com/GNS3/gns3-gui.git
 cd gns3-gui || exit
 git checkout "$latest_GNS3_release"
 sudo pkgfile --update
-PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-gui
+PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server/gns3-gui
 
 # Verifying GNS3 installation
 echo -e "
@@ -196,14 +197,20 @@ if [[ "$check_for_gns3" -lt 2 ]]; then
   check_for_gns3_gui=$(pacman -Qe | grep -c python-gns3-gui)
   if [[ "$check_for_gns3_gui" -lt 1 ]]; then
     echo -e "
-    GNS 3 GUI was not installed..."
+    GNS 3 GUI was not installed...
+
+    attempting to re-install"
+    PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server/gns3-gui
     sleep 1
   fi
   check_for_gns3_server=$(pacman -Qe | grep -c python-gns3-server)
   if [[ "$check_for_gns3_server" -lt 1 ]]; then
     echo -e "
-    GNS 3 Server was not installed..."
-    sleep 1
+    GNS 3 Server was not installed...
+
+      attempting to re-install"
+      PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
+      sleep 1
   fi
 else
   echo -e "
