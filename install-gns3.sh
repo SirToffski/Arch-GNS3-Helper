@@ -167,22 +167,16 @@ echo -e "
 Prepare to install GNS3-server"
 sleep 1
 mkdir -p "$HOME"/GNS3-Dev && cd "$_" || exit
-git clone https://github.com/GNS3/gns3-server.git
-cd gns3-server || exit
-git checkout "$latest_GNS3_release"
 sudo pkgfile --update
-PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
+PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+https://github.com/GNS3/gns3-server.git
 cd ..
 
 # Install GNS3 GUI
 echo -e "
 Install GNS3 GUI"
 sleep 1
-git clone https://github.com/GNS3/gns3-gui.git
-cd gns3-gui || exit
-git checkout "$latest_GNS3_release"
 sudo pkgfile --update
-PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-gui
+PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+https://github.com/GNS3/gns3-gui.git
 
 # Verifying GNS3 installation
 echo -e "
