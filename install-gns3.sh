@@ -169,7 +169,6 @@ sleep 1
 mkdir -p "$HOME"/GNS3-Dev && cd "$_" || exit
 sudo pkgfile --update
 PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+https://github.com/GNS3/gns3-server/tree/v2.1.21
-cd ..
 
 # Install GNS3 GUI
 echo -e "
