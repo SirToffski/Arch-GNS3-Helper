@@ -1,0 +1,36 @@
+== Automated installation process
+The `install-gns3.sh` script will automate most of the installation process.
+
+== Features
+
+=== Error checking
+
+The script checks for errors along the way. If one of the steps did not succeed the script will be ended and the user notified.
+
+Example:
+
+```
+yay -S vpcs --noconfirm # <1>
+cd "$HOME" || exit
+check_for_vpcs=$(type vpcs | grep -c "vpcs is /usr/bin/vpcs") # <2>
+if [[ "$check_for_vpcs" -lt 1 ]];  then # <3>
+  echo -e "${On_Red}
+  Unable to find VPCS after isntall....
+  Aborting the script${Color_Off}"
+  exit
+fi
+```
+<1> Installing VPCS from AUR
+<2> Define a variable to check for VPCS installation. If installed, grep value will be > 1. There are many ways to do this, I've chosed this way for no particular reason.
+<3> If the value returned by the $check_for_vpcs is less then 1, notify the user and end the script.
+
+
+== Usage
+
+The script aims to provide a complete and functioning GNS3 experience. Using the script is simple. Recommended usage is to clone the repo and to execute the script via bash.
+
+```
+git clone https://github.com/SirToffski/Arch-GNS3-Helper.git
+cd Arch-GNS3-Helper/
+bash install-gns3.sh
+```
