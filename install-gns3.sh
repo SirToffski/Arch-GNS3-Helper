@@ -4,7 +4,10 @@
 
 # AUR access and YAY are required.
 
-source "$(find ~/*/Arch-GNS3-Helper/ -name colours.sh)"
+my_repo_folder=$(find /home -type d -name Arch-GNS3-Helper)
+
+source "$my_repo_folder"/docs/colours.sh
+
 my_separator="+----------------------------------------+"
 
 latest_GNS3_release=v2.1.20
