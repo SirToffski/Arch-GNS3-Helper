@@ -1,6 +1,6 @@
 # Arch GNS3 Helper
 
-This repository contains a helper script based on my earlier article - https://medium.com/@Ninja/install-gns3-on-arch-manjaro-linux-the-right-way-c5a3c4fa337d
+This repository contains a helper script based on one of my early blog posts about [installing GNS3 on Arch/Manjaro](https://medium.com/@Ninja/install-gns3-on-arch-manjaro-linux-the-right-way-c5a3c4fa337d).
 
 ## Purpose
 The purpose of the script is to automate GNS3 installation on Arch Linux and Arch-based distros.
