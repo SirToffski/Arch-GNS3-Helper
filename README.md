@@ -30,9 +30,9 @@ if [[ "$check_for_vpcs" -lt 1 ]];  then # <3>
   exit
 fi
 ```
-<1> Installing VPCS from AUR
-<2> Define a variable to check for VPCS installation. If installed, grep value will be > 1. There are many ways to do this, I've chosed this way for no particular reason.
-<3> If the value returned by the $check_for_vpcs is less then 1, notify the user and end the script.
+1. Installing VPCS from AUR
+2. Define a variable to check for VPCS installation. If installed, grep value will be > 1. There are many ways to do this, I've chosed this way for no particular reason.
+3. If the value returned by the $check_for_vpcs is less then 1, notify the user and end the script.
 
 
 ## Usage
