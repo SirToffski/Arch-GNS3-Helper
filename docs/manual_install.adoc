@@ -17,6 +17,7 @@ $ sudo tee -a /etc/pacman.conf > /dev/null << EOL
 > [archlinuxfr]
 > SigLevel = Never
 > Server = http://repo.archlinux.fr/$arch
+> EOL
 ----
 
 Now clone the YAY AUR repo and build the package - it will be installed after building:
