@@ -10,7 +10,7 @@ source "$my_repo_folder"/docs/colours.sh
 
 my_separator="+----------------------------------------+"
 
-latest_GNS3_release=v2.2.5
+latest_GNS3_release=v2.2.7
 
 yay_status_check() {
   check_for_yay=$(pacman -Qe | grep -c yay)
@@ -27,7 +27,7 @@ yay_status_check() {
     if [[ $install_yay == 1 ]]; then
       printf %b\\n "
     $my_separator
-    ${BCyan}Installing YAY${Color_Off}
+    ${BCyan}Installing Yay${Color_Off}
     $my_separator"
       sleep 2
       git clone https://aur.archlinux.org/yay.git
@@ -35,9 +35,9 @@ yay_status_check() {
       makepkg -si
     else
       printf %b\\n "
-    YAY is required for this script. Either install it manually then re-run the script, or let the script install it for you.
+    Yay is required for this script. Either install it manually then re-run the script, or let the script install it for you.
 
-    Ending the script...."
+    Aborting the script...."
       exit
     fi
   fi
@@ -48,7 +48,9 @@ intro() {
 $my_separator
 ${IWhite}The script will perform installation steps as described in https://medium.com/@Ninja/install-gns3-on-arch-manjaro-linux-the-right-way-c5a3c4fa337d
 
-You are encouraged to either read through the script or the article to make sure you understand the steps involved.${Color_Off}
+You are encouraged to either read through the script or the article to make sure you understand the steps involved.
+
+Packets are only installed if not already present (--needed option).${Color_Off}
 
 $my_separator\n"
 
@@ -57,6 +59,7 @@ Press any key to continue or CTRL+C to exit the script"
 }
 
 install_dynamips() {
+  # Install dynamips (Cisco router support)
   printf %b\\n "
 $my_separator
 ${BCyan}Installing dynamips${Color_Off}
@@ -72,26 +75,27 @@ $my_separator
   check_for_dynamips=$(dynamips 2>/dev/null | grep -c version)
   if [[ $check_for_dynamips -lt 1 ]]; then
     printf %b\\n "${On_Red}
-  Unable to find dynamips after isntall....
+  Unable to find dynamips after install....
   Aborting the script${Color_Off}"
     exit
   fi
 }
 
 install_vpcs() {
-  # Installing VPCS
+  # Install VPCS
   printf %b\\n "
 $my_separator
 ${BCyan}Installing VPCS${Color_Off}
 $my_separator
 "
   sleep 2
+
   yay -S vpcs --noconfirm --needed
+
   cd "$HOME" || exit
-  check_for_vpcs=$(type vpcs | grep -c "vpcs is /usr/bin/vpcs")
-  if [[ $check_for_vpcs -lt 1 ]]; then
+  if ! [[ -f "/usr/bin/vpcs" ]]; then
     printf %b\\n "${On_Red}
-  Unable to find VPCS after isntall....
+  Unable to find VPCS after install....
   Aborting the script${Color_Off}"
     exit
   fi
@@ -137,10 +141,10 @@ EOL
   check_excesscoll_2=$(tail -2 /etc/sysctl.d/99-sysctl.conf | grep -c 10000)
 
   if [[ $check_excesscoll_1 -lt 1 ]] || [[ $check_excesscoll_2 -lt 1 ]]; then
-    printf %b\\n "${On_Red}Excesscoll error prevention did not work....
-  Something is not working correct..
+    printf %b\\n "${On_Red}EXCESSCOLL error prevention did not work....
+  Something is not working correctly..
 
-  Ending the excipt${Color_Off}"
+  Aborting the script${Color_Off}"
     exit
   fi
 }
@@ -161,7 +165,7 @@ $my_separator
   uBridge was not found after installation.
   Something did not work correctly.
 
-  Edning the script....${Color_Off}"
+  Aborting the script....${Color_Off}"
     exit
   fi
 }
@@ -207,11 +211,11 @@ install_python-pypi2pkgbuild() {
   # Install python-pypi2pkgbuild
   printf %b\\n "
 $my_separator
-${BCyan}Installing python-pypi2pkgbuild${Color_Off}
+${BCyan}Installing python-pypi2pkgbuild-git${Color_Off}
 $my_separator
 "
   sleep 2
-  yay -S python-pypi2pkgbuild --noconfirm --needed
+  yay -S python-pypi2pkgbuild-git --noconfirm --needed
   sudo pacman -S python-wheel --noconfirm --needed
   yay -S python-zipstream --noconfirm --needed
 }
@@ -220,7 +224,7 @@ install_gns_dependencies() {
   # Install GNS3 Dependencies
   printf %b\\n "
 $my_separator
-${BCyan}Installing GNS3 Dependencies${Color_Off}
+${BCyan}Installing GNS3 dependencies${Color_Off}
 $my_separator
 "
   sleep 2
@@ -232,7 +236,7 @@ install_gns3_server() {
   # Prepare to install GNS3-server
   printf %b\\n "
 $my_separator
-${BCyan}Prepare to install GNS3-server${Color_Off}
+${BCyan}Preparing to install GNS3-server${Color_Off}
 $my_separator
 "
   sleep 2
@@ -243,7 +247,7 @@ $my_separator
   sudo pkgfile --update
   printf %b\\n "
 $my_separator
-${BCyan}Install GNS3-server${Color_Off}
+${BCyan}Installing GNS3-server${Color_Off}
 $my_separator
 "
   sleep 2
@@ -255,7 +259,7 @@ install_gns3_gui() {
   # Install GNS3 GUI
   printf %b\\n "
 $my_separator
-${BCyan}Install GNS3-GUI${Color_Off}
+${BCyan}Installing GNS3-GUI${Color_Off}
 $my_separator
 "
   sleep 2
@@ -267,10 +271,10 @@ $my_separator
 }
 
 verify_gns3_installation() {
-  # Verifying GNS3 installation
+  # Verify GNS3 installation
   printf %b\\n "
 $my_separator
-${BCyan}Verifying the installation.${Color_Off}
+${BCyan}Verifying the installation${Color_Off}
 $my_separator
 "
   sleep 3
@@ -284,7 +288,7 @@ $my_separator
     check_for_gns3_gui=$(pacman -Qe | grep -c python-gns3-gui)
     if [[ $check_for_gns3_gui -lt 1 ]]; then
       printf %b\\n "${On_Red}
-    GNS 3 GUI was not installed...
+    GNS3-GUI was not installed...
 
     attempting to re-install${Color_Off}"
       PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server/gns3-gui
@@ -293,7 +297,7 @@ $my_separator
     check_for_gns3_server=$(pacman -Qe | grep -c python-gns3-server)
     if [[ $check_for_gns3_server -lt 1 ]]; then
       printf %b\\n "${On_Red}
-    GNS 3 Server was not installed...
+    GNS3-server was not installed...
 
       attempting to re-install${Color_Off}"
       PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
@@ -301,28 +305,9 @@ $my_separator
     fi
   else
     printf %b\\n "${IGreen}
-  Everything looks alright. If you are using Gnome or Budgie, the script can make a launcher icon for you.
-
-  1 = yes, 2 = no${Color_Off}"
-    read -r make_launcher
-    if [[ $make_launcher == 1 ]]; then
-      sudo tee -a /usr/share/applications/gns3.desktop >/dev/null <<EOL
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=GNS3
-GenericName=Graphical Network Simulator 3
-Comment=Graphical Network Simulator 3
-Exec=/usr/bin/gns3
-Icon=gns3
-Terminal=false
-Categories=Application;Network;Qt;
-EOL
-    fi
-    printf %b\\n "${IGreen}
   Installation has been completed!
 
-  Please reboot your PC...${Color_Off}"
+  Please reboot your PC or logout and in again for the changes to take effect.${Color_Off}"
   fi
 }
 

@@ -157,7 +157,7 @@ $ yay -S ubridge --noconfirm
 ```bash
 $ cd $HOME
 $ ubridge -v
-ubridge version 0.9.14
+ubridge version 0.9.18
 $ getcap $(which ubridge)
 /usr/local/bin/ubridge = cap_net_admin,cap_net_raw+ep
 ```
@@ -197,12 +197,12 @@ user wheel wireshark docker
 ```
 
 ### GNS3
-#### python-pypi2pkgbuild
-Install python-pypi2pkgbuild from AUR to create PKGBUILD from GNS3 git repos
+#### python-pypi2pkgbuild-git
+Install python-pypi2pkgbuild-git from AUR to create PKGBUILD from GNS3 git repos
 ```bash
-$ yay -S python-pypi2pkgbuild --noconfirm
+$ yay -S python-pypi2pkgbuild-git --noconfirm
 ```
-Create an alias for pypi2pkgbuild to make creating/installing PKGBUILD easier:
+Create an alias for pypi2pkgbuild-git to make creating/installing PKGBUILD easier:
 ```bash
 $ alias pypi2pkgalias='PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f'
 ```
@@ -217,8 +217,8 @@ Clone the repository and checkout the latest stabe release. Build the package wi
 $ mkdir -p $HOME/GNS3-Dev && cd $_
 $ git clone https://github.com/GNS3/gns3-server.git
 $ cd gns3-server
-$ git tag --list 'v2.1.*'
-$ git checkout v2.1.20
+$ git tag --list 'v2.2.*'
+$ git checkout v2.2.7
 $ pypi2pkgalias git+file://$PWD
 $ cd ..
 ```
@@ -229,8 +229,8 @@ Repeat the process with GNS3-GUI.
 ```bash
 $ git clone https://github.com/GNS3/gns3-gui.git
 $ cd gns3-gui
-$ git tag --list 'v2.1.*'
-$ git checkout v2.1.20
+$ git tag --list 'v2.2.*'
+$ git checkout v2.2.7
 $ pypi2pkgalias git+file://$PWD
 ```
 
@@ -238,8 +238,8 @@ $ pypi2pkgalias git+file://$PWD
 
 ```bash
 $ pacman -Qe | grep gns3
-python-gns3-gui-git 2.1.12.r0.ga1496bff-1
-python-gns3-server-git 2.1.12.r0.gbccdfc97-1
+python-gns3-gui-git 2.2.7.r0.gb1ec9d53-1
+python-gns3-server-git 2.2.7.r0.g087cba39-1
 ```
 
 ##### Gnome launcher
@@ -261,6 +261,5 @@ $ sudo tee -a /usr/share/applications/gns3.desktop > /dev/null << EOL
 ```
 
 # Changelog
-
 June 29th 2019
 * As usual, there were a ton of minor bugs in the initial commit. The script should now be completely functional. Some cosmetic changes will be added to make the script more readable.
