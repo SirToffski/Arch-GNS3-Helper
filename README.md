@@ -164,7 +164,7 @@ $ getcap $(which ubridge)
 
 ### QEMU
 ```bash
-$ sudo pacman -S qemu
+$ sudo pacman -S qemu qemu-arch-extra
 ```
 ### Docker
 ##### Installation

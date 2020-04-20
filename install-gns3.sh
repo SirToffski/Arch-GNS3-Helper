@@ -178,7 +178,7 @@ ${BCyan}Installing QEMU${Color_Off}
 $my_separator
 "
   sleep 2
-  sudo pacman -S qemu --noconfirm --needed
+  sudo pacman -S qemu qemu-arch-extra --noconfirm --needed
 }
 
 install_docker() {
