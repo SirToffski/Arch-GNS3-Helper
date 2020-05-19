@@ -95,7 +95,7 @@ $ getcap $(which dynamips)
 ### VPCS
 ##### Install
 ```bash
-$ yay -S vpcs --noconfrim
+$ yay -S vpcs --noconfirm
 ```
 ##### Verify
 ```bash
@@ -109,7 +109,7 @@ Welcome to Virtual PC Simulator, version 0.8 beta1
 ##### Install
 ```bash
 $ sudo pacman -S iniparser
-$ yay -S iouyap --noconfrim
+$ yay -S iouyap --noconfirm
 $ cd $HOME
 $ sudo setcap cap_net_admin,cap_net_raw=ep $(which iouyap)
 ```
