@@ -91,7 +91,7 @@ $my_separator
   sleep 2
 
   cd "$my_repo_folder"/vpcs || exit
-  makepkg -C && sudo pacman -U vpcs-0.8beta1-1-x86_64.pkg.tar.xz
+  makepkg -C && sudo pacman -U vpcs-0.8beta1-1-x86_64.pkg.tar.xz --needed --noconfirm
 
   cd "$HOME" || exit
   if [[ -z $(which vpcs) ]]; then
