@@ -1,0 +1,20 @@
+## PKGBUILD by https://github.com/SirToffski
+pkgname=vpcs
+_pkgname=${pkgname%-bin}
+_reponame=vpcs
+pkgver=0.8beta1
+pkgrel=1
+pkgdesc="Simple virtual PC simulator"
+arch=('i686' 'x86_64')
+url="http://sourceforge.net/projects/vpcs/"
+license=('BSD')
+conflicts=('vpcs')
+makedepends=('make' 'gcc' 'git')
+source=("https://github.com/GNS3/$_reponame/releases/download/v$pkgver/vpcs")
+sha256sums=('baa53bc9686a8123c755b124a1ddb57e83bcc0a9afa8bedf150765629afc069b')
+
+
+package() {
+   mkdir -p "$pkgdir/usr/bin"
+   install -Dm755 "${srcdir}/${_reponame}" "${pkgdir}"/usr/bin/${pkgname}  
+}

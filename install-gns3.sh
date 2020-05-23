@@ -90,10 +90,11 @@ $my_separator
 "
   sleep 2
 
-  yay -S vpcs --noconfirm --needed
+  cd "$my_repo_folder"/vpcs || exit
+  makepkg -C && sudo pacman -U vpcs-0.8beta1-1-x86_64.pkg.tar.xz
 
   cd "$HOME" || exit
-  if ! [[ -f "/usr/bin/vpcs" ]]; then
+  if [[ -z $(which vpcs) ]]; then
     printf %b\\n "${On_Red}
   Unable to find VPCS after install....
   Aborting the script${Color_Off}"
