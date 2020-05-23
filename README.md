@@ -20,19 +20,20 @@ The script checks for errors along the way. If one of the steps did not succeed 
 Example:
 
 ```bash
-yay -S vpcs --noconfirm # <1>
-cd "$HOME" || exit
-check_for_vpcs=$(type vpcs | grep -c "vpcs is /usr/bin/vpcs") # <2>
-if [[ "$check_for_vpcs" -lt 1 ]];  then # <3>
-  echo -e "${On_Red}
-  Unable to find VPCS after isntall....
+cd "$my_repo_folder"/vpcs || exit # <1>
+  makepkg -C && sudo pacman -U vpcs-0.8beta1-1-x86_64.pkg.tar.xz --needed --noconfirm # <1>
+
+  cd "$HOME" || exit
+  if [[ -z $(which vpcs) ]]; then # <2>
+    printf %b\\n "${On_Red}
+  Unable to find VPCS after install....
   Aborting the script${Color_Off}"
-  exit
+    exit
+  fiit
 fi
 ```
-1. Installing VPCS from AUR
-2. Define a variable to check for VPCS installation. If installed, grep value will be > 1. There are many ways to do this, I've chosed this way for no particular reason.
-3. If the value returned by the $check_for_vpcs is less then 1, notify the user and end the script.
+1. Build the VPCS package from the official binaries
+2. WHICH(1) - shows the full path of (shell) commands. If VPCS installed it would be in the path. `-z` flag in the `if` statement means: "if the output of `which vpcs` is an empty string - VPCS is NOT installed"
 
 
 ## Usage
