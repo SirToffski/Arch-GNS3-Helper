@@ -95,11 +95,11 @@ $ getcap $(which dynamips)
 ### VPCS
 ##### Install
 Recently VPCS no longer successfully builds from souce of Arch (at least with Kernel 5.6).
-A workaround is to download the binary off the VPCS Girhub repo: https://github.com/GNS3/vpcs
+A workaround is to download the binary off the VPCS GitHub repository: https://github.com/GNS3/vpcs
 
-Since we are using pacman for everyting - we will first create a package. Check out the vpcs folder in this repository for a PKGBUILD file.
+Since we are using pacman for everything - we will first create a package using `makepkg`. Check out the vpcs folder in this repository for a PKGBUILD file.
 
-If you are installing everything manually the easiert way is:
+If you are installing everything manually the easiest way is:
 
 ```bash
 # Download the PKGBUILD file from this repo
