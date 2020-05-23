@@ -94,14 +94,24 @@ $ getcap $(which dynamips)
 ```
 ### VPCS
 ##### Install
+Recently VPCS no longer successfully builds from souce of Arch (at least with Kernel 5.6).
+A workaround is to download the binary off the VPCS Girhub repo: https://github.com/GNS3/vpcs
+
+Since we are using pacman for everyting - we will first create a package. Check out the vpcs folder in this repository for a PKGBUILD file.
+
+If you are installing everything manually the easiert way is:
+
 ```bash
-$ yay -S vpcs --noconfirm
+# Download the PKGBUILD file from this repo
+$ mkdir vpcs && cd vpcs
+$ wget https://raw.githubusercontent.com/SirToffski/Arch-GNS3-Helper/master/vpcs/PKGBUILD
+$ makepkg -Ci
 ```
 ##### Verify
 ```bash
 $ cd $HOME
-$ type vpcs
-vpcs is /usr/bin/vpcs
+$ which vpcs
+/usr/bin/vpcs
 $ vpcs -v | grep version
 Welcome to Virtual PC Simulator, version 0.8 beta1
 ```
