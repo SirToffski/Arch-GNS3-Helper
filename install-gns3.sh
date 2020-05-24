@@ -10,12 +10,11 @@ source "$my_repo_folder"/docs/colours.sh
 
 my_separator="+----------------------------------------+"
 
-latest_GNS3_release=v2.2.7
+latest_GNS3_release=2.2.8
 
 yay_status_check() {
-  check_for_yay=$(pacman -Qe | grep -c yay)
 
-  if [[ $check_for_yay -lt 1 ]]; then
+  if [[ -z $(which yay) ]]; then
     printf %b\\n "
   Yay does not appear to be installed.
 
@@ -25,18 +24,16 @@ yay_status_check() {
 
     read -r install_yay
     if [[ $install_yay == 1 ]]; then
-      printf %b\\n "
-    $my_separator
-    ${BCyan}Installing Yay${Color_Off}
-    $my_separator"
+      printf %b\\n "\n$my_separator\n${BCyan}Installing Yay${Color_Off}\n$my_separator"
       sleep 2
       git clone https://aur.archlinux.org/yay.git
       cd yay || exit
       makepkg -si
     else
       printf %b\\n "
-    Yay is required for this script. Either install it manually then re-run the script, or let the script install it for you.
-
+    Yay is required for this script. \
+    Either install it manually then re-run the script, \
+    or let the script install it for you.\n
     Aborting the script...."
       exit
     fi
@@ -46,11 +43,13 @@ yay_status_check() {
 intro() {
   printf %b\\n "
 $my_separator
-${IWhite}The script will perform installation steps as described in https://medium.com/@Ninja/install-gns3-on-arch-manjaro-linux-the-right-way-c5a3c4fa337d
+${IWhite}The script will perform installation steps as described in
+https://medium.com/@Ninja/install-gns3-on-arch-manjaro-linux-the-right-way-c5a3c4fa337d
 
-You are encouraged to either read through the script or the article to make sure you understand the steps involved.
+You are encouraged to either read through the script or the article to
+make sure you understand the steps involved.
 
-Packets are only installed if not already present (--needed option).${Color_Off}
+Packages are only installed if not already present (--needed option).${Color_Off}
 
 $my_separator\n"
 
@@ -68,12 +67,11 @@ $my_separator
   sleep 2
 
   sudo pacman -S libelf libpcap cmake --noconfirm --needed
-  yay -S dynamips --noconfirm --needed
+  yay -S dynamips --needed --answerclean "A" --noconfirm
   sudo setcap cap_net_admin,cap_net_raw=ep "$(command -v dynamips)"
 
   cd "$HOME" || exit
-  check_for_dynamips=$(dynamips 2>/dev/null | grep -c version)
-  if [[ $check_for_dynamips -lt 1 ]]; then
+  if [[ -z $(which dynamips) ]]; then
     printf %b\\n "${On_Red}
   Unable to find dynamips after install....
   Aborting the script${Color_Off}"
@@ -90,8 +88,8 @@ $my_separator
 "
   sleep 2
 
-  cd "$my_repo_folder"/vpcs || exit
-  makepkg -C && sudo pacman -U vpcs-0.8beta1-1-x86_64.pkg.tar.xz --needed --noconfirm
+  cd "$my_repo_folder"/pkg/vpcs || exit
+  makepkg -sCf && sudo pacman -U vpcs-0.8beta1-1-x86_64.pkg.tar.xz --needed --noconfirm
 
   cd "$HOME" || exit
   if [[ -z $(which vpcs) ]]; then
@@ -110,12 +108,11 @@ ${BCyan}Installing IOUYAP${Color_Off}
 $my_separator
 "
   sleep 2
-  sudo pacman -S iniparser --noconfirm --needed
-  yay -S iouyap --noconfirm --needed
+  cd "$my_repo_folder"/pkg || exit
+  sudo pacman -U iouyap-0.97-2-x86_64.pkg.tar.xz --needed --noconfirm
   cd "$HOME" || exit
   sudo setcap cap_net_admin,cap_net_raw=ep "$(command -v iouyap)"
-  check_for_iouyap=$(iouyap -V | grep -c iouyap)
-  if [[ $check_for_iouyap -lt 1 ]]; then
+  if [[ -z $(which iouyap) ]]; then
     printf %b\\n "${On_Red}
   Unable to find IOUYAP after install....
   Aborting the script${Color_Off}"
@@ -158,10 +155,9 @@ $my_separator
 ${BCyan}Installing uBridge${Color_Off}
 $my_separator
 "
-  yay -S ubridge --noconfirm --needed
+  yay -S ubridge --answerclean "A" --noconfirm --needed
   cd "$HOME" || exit
-  check_for_ubridge=$(ubridge -v | grep -c ubridge)
-  if [[ $check_for_ubridge -lt 1 ]]; then
+  if [[ -z $(which ubridge) ]]; then
     printf %b\\n "${On_Red}
   uBridge was not found after installation.
   Something did not work correctly.
@@ -208,17 +204,17 @@ $my_separator
   sudo gpasswd -a "$USER" wireshark
 }
 
-install_python-pypi2pkgbuild() {
+install_pip2pkgbuild() {
   # Install python-pypi2pkgbuild
   printf %b\\n "
 $my_separator
-${BCyan}Installing python-pypi2pkgbuild-git${Color_Off}
+${BCyan}Installing pip2pkgbuild${Color_Off}
 $my_separator
 "
   sleep 2
-  yay -S python-pypi2pkgbuild-git --noconfirm --needed
+  yay -S pip2pkgbuild --answerclean "A" --noconfirm --needed
   sudo pacman -S python-wheel --noconfirm --needed
-  yay -S python-zipstream --noconfirm --needed
+  yay -S python-zipstream --answerclean "A" --noconfirm --needed
 }
 
 install_gns_dependencies() {
@@ -229,8 +225,17 @@ ${BCyan}Installing GNS3 dependencies${Color_Off}
 $my_separator
 "
   sleep 2
-  sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip --noconfirm --needed
+  sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip python-async_generator python-jinja python-distro python-jsonschema python-aiohttp-cors --noconfirm --needed
   sudo pacman -S git --noconfirm --needed
+
+  mkdir -p "$HOME"/GNS3-Dev/python-requirements/{aiohttp,aiohttp-cors,aiofiles,psutil,async-timeout,py-cpuinfo,yarl} && cd "$HOME"/GNS3-Dev/python-requirements || exit
+
+  cd "$HOME"/GNS3-Dev/python-requirements/aiohttp && pip2pkgbuild aiohttp -v 3.6.2 -n python-pip2pkg-aiohttp && makepkg -sCfi
+  cd "$HOME"/GNS3-Dev/python-requirements/yarl && pip2pkgbuild yarl -v 1.3.0 -n python-pip2pkg-yarl && makepkg -sCfi
+  cd "$HOME"/GNS3-Dev/python-requirements/aiofiles && pip2pkgbuild aiofiles -v 0.4.0 -n python-pip2pkg-aiofiles && makepkg -sCfi
+  cd "$HOME"/GNS3-Dev/python-requirements/psutil && pip2pkgbuild psutil -v 5.6.6 -n python-pip2pkg-psutil && makepkg -sCfi
+  cd "$HOME"/GNS3-Dev/python-requirements/async-timeout && pip2pkgbuild async-timeout -v 3.0.1 -n python-pip2pkg-async-timeout && makepkg -sCfi
+  cd "$HOME"/GNS3-Dev/python-requirements/py-cpuinfo && pip2pkgbuild py-cpuinfo -v 5.0.0 -n python-pip2pkg-py-cpuinfo && makepkg -sCfi
 }
 
 install_gns3_server() {
@@ -242,17 +247,15 @@ $my_separator
 "
   sleep 2
   mkdir -p "$HOME"/GNS3-Dev && cd "$_" || exit
-  git clone https://github.com/GNS3/gns3-server.git
-  cd gns3-server || exit
-  git checkout "$latest_GNS3_release"
-  sudo pkgfile --update
+  mkdir gns3-server && cd gns3-server || exit
+  pip2pkgbuild gns3-server -v "$latest_GNS3_release" -n python-pip2pkg-gns3-server
   printf %b\\n "
 $my_separator
 ${BCyan}Installing GNS3-server${Color_Off}
 $my_separator
 "
   sleep 2
-  PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
+  makepkg -sCfi
   sleep 2
 }
 
@@ -263,12 +266,11 @@ $my_separator
 ${BCyan}Installing GNS3-GUI${Color_Off}
 $my_separator
 "
+  cd "$HOME"/GNS3-Dev || exit
+  mkdir gns3-gui && cd gns3-gui || exit
+  pip2pkgbuild gns3-gui -v "$latest_GNS3_release" -n python-pip2pkg-gns3-gui
   sleep 2
-  git clone https://github.com/GNS3/gns3-gui.git
-  cd gns3-gui || exit
-  git checkout "$latest_GNS3_release"
-  sudo pkgfile --update
-  PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server/gns3-gui
+  makepkg -sCfi
 }
 
 verify_gns3_installation() {
@@ -286,8 +288,7 @@ $my_separator
 
   Checking further${Color_Off}"
     sleep 1
-    check_for_gns3_gui=$(pacman -Qe | grep -c python-gns3-gui)
-    if [[ $check_for_gns3_gui -lt 1 ]]; then
+    if [[ -z $(which python-gns3-gui) ]]; then
       printf %b\\n "${On_Red}
     GNS3-GUI was not installed...
 
@@ -295,8 +296,7 @@ $my_separator
       PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server/gns3-gui
       sleep 1
     fi
-    check_for_gns3_server=$(pacman -Qe | grep -c python-gns3-server)
-    if [[ $check_for_gns3_server -lt 1 ]]; then
+    if [[ -z $(which python-gns3-server) ]]; then
       printf %b\\n "${On_Red}
     GNS3-server was not installed...
 
@@ -323,7 +323,7 @@ main() {
   install_qemu
   install_docker
   install_wireshark
-  install_python-pypi2pkgbuild
+  install_pip2pkgbuild
   install_gns_dependencies
   install_gns3_server
   install_gns3_gui
