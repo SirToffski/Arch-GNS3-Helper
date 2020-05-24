@@ -312,6 +312,28 @@ $my_separator
   fi
 }
 
+create_gns3_launcher() {
+  printf %b\\n "${IGreen}If you are using Gnome or Budgie, the script can make a launcher icon for you.
+  1 = yes, 2 = no${Color_Off}"
+    read -r make_launcher
+    if [[ $make_launcher == 1 ]]; then
+      sudo tee -a /usr/share/applications/gns3.desktop >/dev/null <<EOL
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=GNS3
+GenericName=Graphical Network Simulator 3
+Comment=Graphical Network Simulator 3
+Exec=/usr/bin/gns3
+Icon=gns3
+Terminal=false
+Categories=Application;Network;Qt;
+EOL
+    fi
+    printf %b\\n "${IGreen}
+  Done! Please remember to reboot your PC.${Color_Off}"
+}
+
 main() {
   yay_status_check
   intro
@@ -328,6 +350,7 @@ main() {
   install_gns3_server
   install_gns3_gui
   verify_gns3_installation
+  create_gns3_launcher
 }
 
 main
