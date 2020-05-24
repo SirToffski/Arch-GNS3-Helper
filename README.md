@@ -221,7 +221,7 @@ First, install the packages which are in official Arch Linux repositories
 ```bash
 $ sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip python-async_generator python-jinja python-distro python-jsonschema python-aiohttp-cors --noconfirm --needed
 ```
-Second, we need to satisfy GNS3 (requirements)[https://github.com/GNS3/gns3-server/blob/master/requirements.txt].
+Second, we need to satisfy GNS3 [requirements](https://github.com/GNS3/gns3-server/blob/master/requirements.txt).
 ```bash
 $ mkdir -p "$HOME"/GNS3-Dev/python-requirements/{aiohttp,aiohttp-cors,aiofiles,psutil,async-timeout,py-cpuinfo,yarl}
 $ cd "$HOME"/GNS3-Dev/python-requirements
