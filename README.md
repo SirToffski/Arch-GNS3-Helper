@@ -106,7 +106,7 @@ If you are installing everything manually the easiest way is:
 # Download the PKGBUILD file from this repo
 $ mkdir vpcs && cd vpcs
 $ wget https://raw.githubusercontent.com/SirToffski/Arch-GNS3-Helper/master/vpcs/PKGBUILD
-$ makepkg -Ci
+$ makepkg -sCfi
 ```
 ##### Verify
 ```bash
@@ -117,11 +117,13 @@ $ vpcs -v | grep version
 Welcome to Virtual PC Simulator, version 0.8 beta1
 ```
 ### IOUYAP
+Similarly, IOUYAP does not build from source. GNS3 does not provide the binary. However luckily I had a cached package saved from some time ago. It's been added to the repository. Easiest way to install is:
+
 ##### Install
 ```bash
 $ sudo pacman -S iniparser
-$ yay -S iouyap --noconfirm
-$ cd $HOME
+$ wget https://github.com/SirToffski/Arch-GNS3-Helper/raw/master/pkg/iouyap-0.97-2-x86_64.pkg.tar.xz
+$ sudo pacman -U iouyap-0.97-2-x86_64.pkg.tar.xz --needed --noconfirm
 $ sudo setcap cap_net_admin,cap_net_raw=ep $(which iouyap)
 ```
 
@@ -208,29 +210,50 @@ user wheel wireshark docker
 ```
 
 ### GNS3
-#### python-pypi2pkgbuild-git
-Install python-pypi2pkgbuild-git from AUR to create PKGBUILD from GNS3 git repos
+#### pip2pkgbuild
+Install pip2pkgbuild from AUR to create PKGBUILD from GNS3 pip packages.
+It will also be used to create packages on which GNS3 depends
 ```bash
-$ yay -S python-pypi2pkgbuild-git --noconfirm
-```
-Create an alias for pypi2pkgbuild-git to make creating/installing PKGBUILD easier:
-```bash
-$ alias pypi2pkgalias='PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f'
+$ yay -S pip2pkgbuild --noconfirm
 ```
 #### GNS3 dependencies:
+First, install the packages which are in official Arch Linux repositories
 ```bash
-$ sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip python-wheel git
+$ sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip python-async_generator python-jinja python-distro python-jsonschema python-aiohttp-cors --noconfirm --needed
 ```
+Second, we need to satisfy GNS3 (requirements)[https://github.com/GNS3/gns3-server/blob/master/requirements.txt].
+```bash
+$ mkdir -p "$HOME"/GNS3-Dev/python-requirements/{aiohttp,aiohttp-cors,aiofiles,psutil,async-timeout,py-cpuinfo,yarl}
+$ cd "$HOME"/GNS3-Dev/python-requirements
+$ cd "$HOME"/GNS3-Dev/python-requirements/aiohttp \
+&& pip2pkgbuild aiohttp -v 3.6.2 \
+-n python-pip2pkg-aiohttp && makepkg -sCfi
+$ cd "$HOME"/GNS3-Dev/python-requirements/yarl \
+&& pip2pkgbuild yarl -v 1.3.0 \
+-n python-pip2pkg-yarl && makepkg -sCfi
+$ cd "$HOME"/GNS3-Dev/python-requirements/aiofiles \
+&& pip2pkgbuild aiofiles -v 0.4.0 \
+-n python-pip2pkg-aiofiles && makepkg -sCfi
+$ cd "$HOME"/GNS3-Dev/python-requirements/psutil \
+&& pip2pkgbuild psutil -v 5.6.6 \
+-n python-pip2pkg-psutil && makepkg -sCfi
+$ cd "$HOME"/GNS3-Dev/python-requirements/async-timeout \
+&& pip2pkgbuild async-timeout -v 3.0.1 \
+-n python-pip2pkg-async-timeout && makepkg -sCfi
+$ cd "$HOME"/GNS3-Dev/python-requirements/py-cpuinfo \
+&& pip2pkgbuild py-cpuinfo -v 5.0.0 \
+-n python-pip2pkg-py-cpuinfo && makepkg -sCfi
+```
+
 ##### GNS3-Server
 Clone the repository and checkout the latest stabe release. Build the package with pypi2pkgbuild.
 
 ```bash
-$ mkdir -p $HOME/GNS3-Dev && cd $_
-$ git clone https://github.com/GNS3/gns3-server.git
+$ cd "$HOME"/GNS3-Dev
+$ mkdir {gns3-server,gns3-gui}
 $ cd gns3-server
-$ git tag --list 'v2.2.*'
-$ git checkout v2.2.7
-$ pypi2pkgalias git+file://$PWD
+$ pip2pkgbuild gns3-server -v 2.2.8 -n python-pip2pkg-gns3-server
+$ makepkg -sCfi
 $ cd ..
 ```
 
@@ -240,9 +263,8 @@ Repeat the process with GNS3-GUI.
 ```bash
 $ git clone https://github.com/GNS3/gns3-gui.git
 $ cd gns3-gui
-$ git tag --list 'v2.2.*'
-$ git checkout v2.2.7
-$ pypi2pkgalias git+file://$PWD
+$ pip2pkgbuild gns3-gui -v 2.2.8 -n python-pip2pkg-gns3-gui
+$ makepkg -sCfi
 ```
 
 ##### Verification
@@ -274,3 +296,7 @@ $ sudo tee -a /usr/share/applications/gns3.desktop > /dev/null << EOL
 # Changelog
 June 29th 2019
 * As usual, there were a ton of minor bugs in the initial commit. The script should now be completely functional. Some cosmetic changes will be added to make the script more readable.
+
+May 24th 2020
+* Moved from `pypi2pkgbuild` to `pip2pkgbuild`. While the former is more convenient for resolving depenencies, it seems to be less stable.
+* VPCS and IOUYAP no longer build from source. VPCS PKGBUILD is included to use the official binary. IOUYAP binary is not provided by GNS3, hense a pre-built package has been added.
