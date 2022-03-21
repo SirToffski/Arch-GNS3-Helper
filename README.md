@@ -214,7 +214,7 @@ user wheel wireshark docker
 Install pip2pkgbuild from AUR to create PKGBUILD from GNS3 pip packages.
 It will also be used to create packages on which GNS3 depends
 ```bash
-$ yay -S pip2pkgbuild --noconfirm
+$ yay -S python-pypi2pkgbuild-git --noconfirm
 ```
 #### GNS3 dependencies:
 First, install the packages which are in official Arch Linux repositories
@@ -252,7 +252,7 @@ Clone the repository and checkout the latest stabe release. Build the package wi
 $ cd "$HOME"/GNS3-Dev
 $ mkdir {gns3-server,gns3-gui}
 $ cd gns3-server
-$ pip2pkgbuild gns3-server -v 2.2.8 -n python-pip2pkg-gns3-server
+$ pip2pkgbuild gns3-server -v 2.2.31 -n python-pip2pkg-gns3-server
 $ makepkg -sCfi
 $ cd ..
 ```
@@ -263,7 +263,7 @@ Repeat the process with GNS3-GUI.
 ```bash
 $ git clone https://github.com/GNS3/gns3-gui.git
 $ cd gns3-gui
-$ pip2pkgbuild gns3-gui -v 2.2.8 -n python-pip2pkg-gns3-gui
+$ pip2pkgbuild gns3-gui -v 2.2.31 -n python-pip2pkg-gns3-gui
 $ makepkg -sCfi
 ```
 
