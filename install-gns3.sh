@@ -212,7 +212,7 @@ ${BCyan}Installing pip2pkgbuild${Color_Off}
 $my_separator
 "
   sleep 2
-  yay -S pip2pkgbuild --answerclean "A" --noconfirm --needed
+  yay -S python-pypi2pkgbuild-git --answerclean "A" --noconfirm --needed
   sudo pacman -S python-wheel --noconfirm --needed
   yay -S python-zipstream --answerclean "A" --noconfirm --needed
 }
