@@ -10,7 +10,7 @@ source "$my_repo_folder"/docs/colours.sh
 
 my_separator="+----------------------------------------+"
 
-latest_GNS3_release=2.2.16
+latest_GNS3_release=2.2.31
 
 yay_status_check() {
 
