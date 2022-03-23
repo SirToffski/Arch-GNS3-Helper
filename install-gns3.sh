@@ -205,14 +205,14 @@ $my_separator
 }
 
 install_pip2pkgbuild() {
-  # Install python-pypi2pkgbuild
+  # Install pip2pkgbuild
   printf %b\\n "
 $my_separator
 ${BCyan}Installing pip2pkgbuild${Color_Off}
 $my_separator
 "
   sleep 2
-  yay -S python-pypi2pkgbuild-git --answerclean "A" --noconfirm --needed
+  yay -S pip2pkgbuild --answerclean "A" --noconfirm --needed
   sudo pacman -S python-wheel --noconfirm --needed
   yay -S python-zipstream --answerclean "A" --noconfirm --needed
 }
@@ -227,15 +227,9 @@ $my_separator
   sleep 2
   sudo pacman -S qt5-svg qt5-websockets python-pip python-pyqt5 python-sip python-async_generator python-jinja python-distro python-jsonschema python-aiohttp-cors --noconfirm --needed
   sudo pacman -S git --noconfirm --needed
+  
+  sudo pacman -S python-{aiohttp,yarl,aiofiles,psutil,async-timeout,py-cpuinfo} --noconfirm --needed
 
-  mkdir -p "$HOME"/GNS3-Dev/python-requirements/{aiohttp,aiohttp-cors,aiofiles,psutil,async-timeout,py-cpuinfo,yarl} && cd "$HOME"/GNS3-Dev/python-requirements || exit
-
-  cd "$HOME"/GNS3-Dev/python-requirements/aiohttp && pip2pkgbuild aiohttp -v 3.6.2 -n python-pip2pkg-aiohttp && makepkg -sCfi
-  cd "$HOME"/GNS3-Dev/python-requirements/yarl && pip2pkgbuild yarl -v 1.3.0 -n python-pip2pkg-yarl && makepkg -sCfi
-  cd "$HOME"/GNS3-Dev/python-requirements/aiofiles && pip2pkgbuild aiofiles -v 0.4.0 -n python-pip2pkg-aiofiles && makepkg -sCfi
-  cd "$HOME"/GNS3-Dev/python-requirements/psutil && pip2pkgbuild psutil -v 5.6.6 -n python-pip2pkg-psutil && makepkg -sCfi
-  cd "$HOME"/GNS3-Dev/python-requirements/async-timeout && pip2pkgbuild async-timeout -v 3.0.1 -n python-pip2pkg-async-timeout && makepkg -sCfi
-  cd "$HOME"/GNS3-Dev/python-requirements/py-cpuinfo && pip2pkgbuild py-cpuinfo -v 5.0.0 -n python-pip2pkg-py-cpuinfo && makepkg -sCfi
 }
 
 install_gns3_server() {
@@ -246,8 +240,7 @@ ${BCyan}Preparing to install GNS3-server${Color_Off}
 $my_separator
 "
   sleep 2
-  mkdir -p "$HOME"/GNS3-Dev && cd "$_" || exit
-  mkdir gns3-server && cd gns3-server || exit
+  mkdir -p "$HOME"/GNS3-Dev/gns3-server && cd "$HOME"/GNS3-Dev/gns3-server || exit
   pip2pkgbuild gns3-server -v "$latest_GNS3_release" -n python-pip2pkg-gns3-server
   printf %b\\n "
 $my_separator
@@ -266,8 +259,7 @@ $my_separator
 ${BCyan}Installing GNS3-GUI${Color_Off}
 $my_separator
 "
-  cd "$HOME"/GNS3-Dev || exit
-  mkdir gns3-gui && cd gns3-gui || exit
+  mkdir -p "$HOME"/GNS3-Dev/gns3-gui && cd "$HOME"/GNS3-Dev/gns3-gui || exit
   pip2pkgbuild gns3-gui -v "$latest_GNS3_release" -n python-pip2pkg-gns3-gui
   sleep 2
   makepkg -sCfi
@@ -281,28 +273,30 @@ ${BCyan}Verifying the installation${Color_Off}
 $my_separator
 "
   sleep 3
-  check_for_gns3=$(pacman -Qe | grep -c python-gns3)
+  check_for_gns3=$(pacman -Qq | grep -c 'python-pip2pkg-gns3')
   if [[ $check_for_gns3 -lt 2 ]]; then
     printf %b\\n "${On_Red}
   It appears the installation was either completed partially or has not been completed at all....
 
   Checking further${Color_Off}"
     sleep 1
-    if [[ -z $(which python-gns3-gui) ]]; then
+    if [[ -z $(pacman -Qq python-pip2pkg-gns3-gui) ]]; then
       printf %b\\n "${On_Red}
     GNS3-GUI was not installed...
 
     attempting to re-install${Color_Off}"
-      PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server/gns3-gui
+      pip2pkgbuild gns3-gui -v "$latest_GNS3_release" -n python-pip2pkg-gns3-gui
       sleep 1
+      makepkg -sCfi
     fi
-    if [[ -z $(which python-gns3-server) ]]; then
+    if [[ -z $(pacman -Qq python-pip2pkg-gns3-server) ]]; then
       printf %b\\n "${On_Red}
     GNS3-server was not installed...
 
       attempting to re-install${Color_Off}"
-      PKGEXT=.pkg.tar pypi2pkgbuild.py -g cython -b /tmp/pypi2pkgbuild/ -f git+file://"$HOME"/GNS3-Dev/gns3-server
+      pip2pkgbuild gns3-gui -v "$latest_GNS3_release" -n python-pip2pkg-gns3-server
       sleep 1
+      makepkg -sCfi
     fi
   else
     printf %b\\n "${IGreen}
