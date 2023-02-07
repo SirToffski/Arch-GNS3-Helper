@@ -204,6 +204,24 @@ $my_separator
   sudo gpasswd -a "$USER" wireshark
 }
 
+install_patch() {
+  # Install patch
+  printf %b\\n "
+$my_separator
+${BCyan}Installing patch${Color_Off}
+$my_separator
+"
+  sudo pacman -S patch --noconfirm --needed
+
+  cd "$HOME" || exit
+  if [[ -z $(which patch) ]]; then
+    printf %b\\n "${On_Red}
+  Unable to find patch after install....
+  Aborting the script${Color_Off}"
+    exit
+  fi
+}
+
 install_pip2pkgbuild() {
   # Install pip2pkgbuild
   printf %b\\n "
@@ -339,6 +357,7 @@ main() {
   install_qemu
   install_docker
   install_wireshark
+  install_patch
   install_pip2pkgbuild
   install_gns_dependencies
   install_gns3_server
